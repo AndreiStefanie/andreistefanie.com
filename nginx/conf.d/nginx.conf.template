@@ -29,12 +29,3 @@ server {
     fastcgi_param PATH_INFO $fastcgi_path_info;
   }
 }
-
-server {
-  listen 80;
-  listen [::]:80;
-
-  server_name ${FQDN};
-
-  return 301 https://${FQDN}$request_uri;
-}

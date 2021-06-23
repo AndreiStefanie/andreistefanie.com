@@ -16,6 +16,8 @@ services:
         define('FS_METHOD', 'direct');
     volumes:
       - ${WORDPRESS_DIR:-./core/wordpress}:/var/www/html
+    ports:
+      - "8000:80"
     restart: always
     networks:
       - wordpress-network
@@ -35,26 +37,28 @@ services:
     networks:
       - wordpress-network
 
-  nginx:
-    build:
-      context: ./nginx
-    container_name: wp_nginx
-    depends_on:
-      - wordpress
-    environment:
-      CERTBOT_EMAIL: ${CERTBOT_EMAIL}
-      ENVSUBST_VARS: FQDN
-      FQDN: ${FQDN}
-    ports:
-      - "${NGINX_HTTP_PORT:-80}:80"
-      - "${NGINX_HTTPS_PORT:-443}:443"
-    volumes:
-      - ${WORDPRESS_DIR:-./core/wordpress}:/var/www/html
-      - ${NGINX_LOG_DIR:-./core/logs/nginx}:/var/log/nginx
-      - letsencrypt:/etc/letsencrypt
-    restart: always
-    networks:
-      - wordpress-network
+  # nginx:
+  #   build:
+  #     context: ./nginx
+  #   container_name: wp_nginx
+  #   depends_on:
+  #     - wordpress
+  #   environment:
+  #     CERTBOT_EMAIL: ${CERTBOT_EMAIL}
+  #     ENVSUBST_VARS: FQDN
+  #     FQDN: ${FQDN}
+  #     STAGING: ${STAGING:-0}
+  #     NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/user_conf.d
+  #   ports:
+  #     - 80
+  #     - 443
+  #   volumes:
+  #     - ${WORDPRESS_DIR:-./core/wordpress}:/var/www/html
+  #     - ${NGINX_LOG_DIR:-./core/logs/nginx}:/var/log/nginx
+  #     - letsencrypt:/etc/letsencrypt
+  #   restart: always
+  #   networks:
+  #     - wordpress-network
 
 volumes:
   mysql: {}

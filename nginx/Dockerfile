@@ -1,3 +1,3 @@
-FROM staticfloat/nginx-certbot
+FROM jonasal/nginx-certbot
 
-COPY ./conf.d /etc/nginx/user.conf.d
+COPY ./conf.d /etc/nginx/templates

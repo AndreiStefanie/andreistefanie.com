@@ -1,4 +1,4 @@
-**_The blazing fast way to get WordPress up and running._**
+**_The blazing-fast way to get WordPress up and running._**
 
 ## What's included
 
