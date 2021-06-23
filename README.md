@@ -12,7 +12,8 @@
 - Install [Docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/)
 - `cp .env.template .env`
 - Fill in the details
-- `docker-compose up -d`
+- If you are running locally or don't have a domain, use `docker-compose -f docker-compose-local.yaml up -d`. Wordpress will be running on [localhost:8000](http://localhost:8000)
+- If you have your server and domain ready use `docker-compose up -d`
 
 ## Hosting
 

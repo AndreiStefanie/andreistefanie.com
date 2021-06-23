@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   wordpress:
-    image: wordpress:${WORDPRESS_VERSION:-php7.4-fpm}
+    image: wordpress:php7.4
     container_name: wordpress
     depends_on:
       - mysql
@@ -16,6 +16,8 @@ services:
         define('FS_METHOD', 'direct');
     volumes:
       - ${WORDPRESS_DIR:-./core/wordpress}:/var/www/html
+    ports:
+      - "8000:80"
     restart: always
     networks:
       - wordpress-network
@@ -26,7 +28,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
-      MYSQL_USER: ${MYSQL_USER:-wordpress}
+      MYSQL_USER: ${MYSQL_USER:-root}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
       MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD:-no}
     volumes:
@@ -35,32 +37,9 @@ services:
     networks:
       - wordpress-network
 
-  nginx:
-    build:
-      context: ./nginx
-    container_name: wp_nginx
-    depends_on:
-      - wordpress
-    environment:
-      CERTBOT_EMAIL: ${CERTBOT_EMAIL}
-      FQDN: ${FQDN}
-      STAGING: ${STAGING:-0}
-      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/user_conf.d
-    ports:
-      - 80
-      - 443
-    volumes:
-      - ${WORDPRESS_DIR:-./core/wordpress}:/var/www/html
-      - ${NGINX_LOG_DIR:-./core/logs/nginx}:/var/log/nginx
-      - letsencrypt:/etc/letsencrypt
-    restart: always
-    networks:
-      - wordpress-network
-
 volumes:
   mysql:
   wordpress:
-  letsencrypt:
 
 networks:
   wordpress-network:
